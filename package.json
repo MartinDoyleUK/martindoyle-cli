@@ -1,6 +1,6 @@
 {
   "name": "martindoyle",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Martin Doyle's simple CLI",
   "type": "module",
   "bin": "dist/index.js",
