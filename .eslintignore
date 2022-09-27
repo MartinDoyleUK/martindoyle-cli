@@ -1,9 +1,6 @@
 # Folders (A-Z)
-/.husky/
-/.vscode/
+/coverage/
 /dist/
 /node_modules/
-/temp/
 
 # Files (A-Z)
-
