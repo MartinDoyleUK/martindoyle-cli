@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Martin Doyle's simple CLI",
   "type": "module",
+  "bin": "dist/index.js",
   "main": "dist/index.js",
   "files": [
     "dist/index.js"
