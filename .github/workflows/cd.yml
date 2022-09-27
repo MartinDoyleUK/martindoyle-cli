@@ -1,7 +1,5 @@
 name: 'NPM publish CD workflow'
-on:
-  release:
-    types: [published]
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,11 +15,11 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: git config --global user.name "GitHub CD bot"
     - run: git config --global user.email "github-cd-bot@example.com"
-    - run: npm version ${{ github.event.release.tag_name }}
+    - run: npm version patch
     - run: npm run build
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    - run: git push
+    - run: git push --follow-tags
       env:
         github-token: ${{ secrets.GITHUB_TOKEN }}
