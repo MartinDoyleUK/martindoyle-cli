@@ -39,7 +39,6 @@ module.exports = {
     'promise',
     'radar',
     'regexp',
-    'sort-keys-fix',
     'unicorn',
   ],
   root: true,
@@ -102,7 +101,6 @@ module.exports = {
         object: true,
       },
     ],
-    'sort-keys-fix/sort-keys-fix': 'warn',
     'unicorn/catch-error-name': [
       'error',
       {
