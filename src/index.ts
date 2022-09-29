@@ -39,62 +39,51 @@ const constructCard = (): string => {
   const marginCol = ' '.repeat(margin);
   const paddingCol = ' '.repeat(padding);
 
-  const topLine = formatters.border(
-    [
-      marginLine,
-      marginCol,
-      '┌',
-      '─'.repeat(longestLine + padding * 2),
-      '┐',
-      marginCol,
-    ].join(''),
-  );
   const headerPadding = [
-    formatters.border(`${marginCol}│`),
-    formatters.bannerName(' '.repeat(longestLine + padding * 2)),
-    formatters.border(`│${marginCol}`),
+    formatters.border(`${marginCol}`),
+    formatters.bannerName(' '.repeat(longestLine + padding * 2 + 2)),
+    formatters.border(`${marginCol}`),
   ].join('');
   const nameLine = [
-    formatters.border(`${marginCol}│`),
+    formatters.border(`${marginCol}`),
     formatters.bannerName(
-      `${paddingCol}${name.padEnd(longestLine)}${paddingCol}`,
+      `${paddingCol}${name.padEnd(longestLine)}  ${paddingCol}`,
     ),
-    formatters.border(`│${marginCol}`),
+    formatters.border(`${marginCol}`),
   ].join('');
   const emailLine = [
-    formatters.border(`${marginCol}│`),
+    formatters.border(`${marginCol}`),
     formatters.bannerEmail(
-      `${paddingCol}${email.padEnd(longestLine)}${paddingCol}`,
+      `${paddingCol}${email.padEnd(longestLine)}  ${paddingCol}`,
     ),
-    formatters.border(`│${marginCol}`),
+    formatters.border(`${marginCol}`),
   ].join('');
   const blankLine = [
-    formatters.border(`${marginCol}│`),
+    formatters.border(`${marginCol}║`),
     ' '.repeat(longestLine + padding * 2),
-    formatters.border(`│${marginCol}`),
+    formatters.border(`║${marginCol}`),
   ].join('');
   const jobLine = [
-    formatters.border(`${marginCol}│`),
+    formatters.border(`${marginCol}║`),
     paddingCol,
     `${title} @ ${employer}`.padEnd(longestLine),
     paddingCol,
-    formatters.border(`│${marginCol}`),
+    formatters.border(`║${marginCol}`),
   ].join('');
   const locationLine = [
-    formatters.border(`${marginCol}│`),
+    formatters.border(`${marginCol}║`),
     paddingCol,
     chalk.dim(`Based in ${location}`.padEnd(longestLine)),
     paddingCol,
-    formatters.border(`│${marginCol}`),
+    formatters.border(`║${marginCol}`),
   ].join('');
   const bottomLine = formatters.border(
     [
       marginCol,
-      '└',
-      '─'.repeat(longestLine + padding * 2),
-      '┘',
+      '╚',
+      '═'.repeat(longestLine + padding * 2),
+      '╝',
       marginCol,
-      marginLine,
     ].join(''),
   );
 
@@ -102,17 +91,17 @@ const constructCard = (): string => {
     const numSpaces = longestLine - stripColor(nextLinkLine).length;
     const afterSpaces = ' '.repeat(numSpaces);
     return [
-      formatters.border(`${marginCol}│`),
+      formatters.border(`${marginCol}║`),
       paddingCol,
       nextLinkLine,
       afterSpaces,
       paddingCol,
-      formatters.border(`│${marginCol}`),
+      formatters.border(`║${marginCol}`),
     ].join('');
   });
 
   return [
-    topLine,
+    marginLine,
     headerPadding,
     nameLine,
     emailLine,
@@ -124,6 +113,7 @@ const constructCard = (): string => {
     ...linkLines,
     blankLine,
     bottomLine,
+    marginLine,
   ].join('\n');
 };
 
