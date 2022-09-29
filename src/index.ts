@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
-// import stripColor from 'strip-color';
+import stripColor from 'strip-color';
 
 import { cardData } from './card-data.js';
 
 const {
-  config: { formatters },
+  config: { formatters, padding, margin },
   content: {
     name,
     location,
+    email,
     job: { title, employer },
     links,
   },
@@ -23,32 +24,107 @@ const getLongest = (strings: string[]): number => {
   );
 };
 
-const buildCardContents = (): string[] => {
-  const mutableCardContents = [
-    formatters.primary(name),
-    `${title} @ ${employer}`,
-    chalk.dim(`Based in ${location}`),
-    '',
-  ];
-
+const getLinkLines = (): string[] => {
   const longestLinkLabel = getLongest(links.map(({ label }) => label));
-  mutableCardContents.push(
-    ...links.map(({ label, url }) => {
-      const paddedLabel = `${label.padStart(longestLinkLabel)}:`;
-      return `${chalk.bold(paddedLabel)} ${formatters.secondary(url)}`;
-    }),
-  );
-
-  return mutableCardContents;
-};
-
-const applyBorderAndSpacing = (cardContents: string[]): string => {
-  return cardContents.join('\n');
+  return links.map(({ label, url }) => {
+    const paddedLabel = `${`${label}:`.padEnd(longestLinkLabel + 1)}`;
+    return `${chalk.bold(paddedLabel)} ${formatters.link(url)}`;
+  });
 };
 
 const constructCard = (): string => {
-  const cardContents = buildCardContents();
-  return applyBorderAndSpacing(cardContents);
+  const rawLinkLines = getLinkLines();
+  const longestLine = getLongest(rawLinkLines.map((line) => stripColor(line)));
+  const marginLine = '\n'.repeat(margin);
+  const marginCol = ' '.repeat(margin);
+  const paddingCol = ' '.repeat(padding);
+
+  const topLine = formatters.border(
+    [
+      marginLine,
+      marginCol,
+      '┌',
+      '─'.repeat(longestLine + padding * 2),
+      '┐',
+      marginCol,
+    ].join(''),
+  );
+  const headerPadding = [
+    formatters.border(`${marginCol}│`),
+    formatters.bannerName(' '.repeat(longestLine + padding * 2)),
+    formatters.border(`│${marginCol}`),
+  ].join('');
+  const nameLine = [
+    formatters.border(`${marginCol}│`),
+    formatters.bannerName(
+      `${paddingCol}${name.padEnd(longestLine)}${paddingCol}`,
+    ),
+    formatters.border(`│${marginCol}`),
+  ].join('');
+  const emailLine = [
+    formatters.border(`${marginCol}│`),
+    formatters.bannerEmail(
+      `${paddingCol}${email.padEnd(longestLine)}${paddingCol}`,
+    ),
+    formatters.border(`│${marginCol}`),
+  ].join('');
+  const blankLine = [
+    formatters.border(`${marginCol}│`),
+    ' '.repeat(longestLine + padding * 2),
+    formatters.border(`│${marginCol}`),
+  ].join('');
+  const jobLine = [
+    formatters.border(`${marginCol}│`),
+    paddingCol,
+    `${title} @ ${employer}`.padEnd(longestLine),
+    paddingCol,
+    formatters.border(`│${marginCol}`),
+  ].join('');
+  const locationLine = [
+    formatters.border(`${marginCol}│`),
+    paddingCol,
+    chalk.dim(`Based in ${location}`.padEnd(longestLine)),
+    paddingCol,
+    formatters.border(`│${marginCol}`),
+  ].join('');
+  const bottomLine = formatters.border(
+    [
+      marginCol,
+      '└',
+      '─'.repeat(longestLine + padding * 2),
+      '┘',
+      marginCol,
+      marginLine,
+    ].join(''),
+  );
+
+  const linkLines = rawLinkLines.map((nextLinkLine) => {
+    const numSpaces = longestLine - stripColor(nextLinkLine).length;
+    const afterSpaces = ' '.repeat(numSpaces);
+    return [
+      formatters.border(`${marginCol}│`),
+      paddingCol,
+      nextLinkLine,
+      afterSpaces,
+      paddingCol,
+      formatters.border(`│${marginCol}`),
+    ].join('');
+  });
+
+  return [
+    topLine,
+    headerPadding,
+    nameLine,
+    emailLine,
+    headerPadding,
+    blankLine,
+    jobLine,
+    locationLine,
+    blankLine,
+    ...linkLines,
+    blankLine,
+    bottomLine,
+  ].join('\n');
 };
 
 const showInfo = async () => {

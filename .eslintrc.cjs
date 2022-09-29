@@ -62,6 +62,7 @@ module.exports = {
     '@typescript-eslint/lines-between-class-members': 'error',
     '@typescript-eslint/member-delimiter-style': 'error',
     '@typescript-eslint/naming-convention': 'error',
+    'array-func/prefer-array-from': 'off',
     'brace-style': 'off',
     'comma-dangle': 'off',
     'comma-spacing': 'off',

@@ -3,20 +3,24 @@ import chalk from 'chalk';
 export const cardData = {
   config: {
     formatters: {
-      primary: chalk.bold.blue,
-      secondary: chalk.cyan,
-      accent: chalk.bold.magenta,
+      border: chalk.bold.blue,
+      bannerName: chalk.bold.white.bgBlue,
+      bannerEmail: chalk.italic.bgBlue,
+      link: chalk.cyan,
     },
-    padding: 1,
+    padding: 2,
     margin: 1,
   },
   content: {
     name: 'Martin Doyle',
     location: 'Maidenhead, UK',
+    email: 'work@martindoyle.com',
     job: {
       title: 'Principal Frontend Engineer',
       employer: 'Nutmeg',
     },
+    skills: ['TypeScript', 'React', 'Microfrontends', 'GraphQL', 'CI/CD'],
+    hobbies: ['DIY', 'Photography', 'Piano', 'Violin', 'Singing'],
     links: [
       {
         label: 'LinkedIn',
@@ -29,10 +33,6 @@ export const cardData = {
       {
         label: 'Twitter',
         url: 'https://twitter.com/MartinDoyleUK',
-      },
-      {
-        label: 'Email',
-        url: 'work@martindoyle.com',
       },
     ],
   },
