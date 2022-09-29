@@ -6,7 +6,7 @@
   "bin": "dist/index.js",
   "main": "dist/index.js",
   "files": [
-    "dist/index.js"
+    "dist/"
   ],
   "repository": "git@github.com:MartinDoyleUK/martindoyle-cli.git",
   "author": "Martin Doyle <github@martindoyle.com>",
