@@ -9,6 +9,7 @@ const {
   config: { formatters, padding, margin },
   content: {
     name,
+    whatami,
     location,
     email,
     job: { title, employer },
@@ -34,7 +35,7 @@ const getLinkLines = (): string[] => {
 
 const constructCard = (): string => {
   const rawLinkLines = getLinkLines();
-  const longestLine = getLongest(rawLinkLines.map((line) => stripColor(line)));
+  const longestLine = getLongest([name, whatami, location, email, title, employer, ...rawLinkLines.map((line) => stripColor(line))]);
   const marginLine = '\n'.repeat(margin);
   const marginCol = ' '.repeat(margin);
   const paddingCol = ' '.repeat(padding);
@@ -48,6 +49,13 @@ const constructCard = (): string => {
     formatters.border(`${marginCol}`),
     formatters.bannerName(
       `${paddingCol}${name.padEnd(longestLine)}  ${paddingCol}`,
+    ),
+    formatters.border(`${marginCol}`),
+  ].join('');
+  const whatamiLine = [
+    formatters.border(`${marginCol}`),
+    formatters.bannerName(
+      `${paddingCol}${whatami.padEnd(longestLine)}  ${paddingCol}`,
     ),
     formatters.border(`${marginCol}`),
   ].join('');
@@ -104,6 +112,7 @@ const constructCard = (): string => {
     marginLine,
     headerPadding,
     nameLine,
+    whatamiLine,
     emailLine,
     headerPadding,
     blankLine,

@@ -13,11 +13,12 @@ export const cardData = {
   },
   content: {
     name: 'Martin Doyle',
+    whatami: 'Highly experienced frontend engineer and technical leader',
     location: 'Maidenhead, UK',
     email: 'work@martindoyle.com',
     job: {
-      title: 'Principal Frontend Engineer',
-      employer: 'Nutmeg',
+      title: 'Web Operations Lead',
+      employer: 'JPMorgan Chase (Nutmeg)',
     },
     skills: ['TypeScript', 'React', 'Microfrontends', 'GraphQL', 'CI/CD'],
     hobbies: ['DIY', 'Photography', 'Piano', 'Violin', 'Singing'],
@@ -29,10 +30,6 @@ export const cardData = {
       {
         label: 'GitHub',
         url: 'https://github.com/MartinDoyleUK',
-      },
-      {
-        label: 'Twitter',
-        url: 'https://twitter.com/MartinDoyleUK',
       },
     ],
   },
