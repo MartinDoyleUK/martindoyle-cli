@@ -17,6 +17,8 @@ concurrency:
 
 jobs:
   publish:
+    # npm publish without --tag moves `latest`, so a GitHub prerelease must not publish.
+    if: ${{ !github.event.release.prerelease }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -39,11 +41,13 @@ jobs:
             exit 1
           fi
       # No dependency cache here: a publish must not restore a cache another workflow wrote.
-      # Node 24 bundles npm 11, which trusted publishing needs (11.5.1 or later).
+      # Node 24 bundles npm 11, which trusted publishing needs (11.5.1 or later). No registry-url:
+      # npm publishes to registry.npmjs.org by default and trusted publishing needs no .npmrc,
+      # while the token entry registry-url writes breaks Yarn Classic without NODE_AUTH_TOKEN.
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
       - run: yarn install --frozen-lockfile
       - run: yarn lint
       - run: yarn build
