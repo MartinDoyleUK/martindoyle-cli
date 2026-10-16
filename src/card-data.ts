@@ -13,12 +13,12 @@ export const cardData = {
   },
   content: {
     name: 'Martin Doyle',
-    whatami: 'Highly experienced frontend engineer and technical leader',
+    whatami: 'Engineering leader: frontend, platforms and AI enablement',
     location: 'Maidenhead, UK',
     email: 'work@martindoyle.com',
     job: {
-      title: 'Web Operations Lead',
-      employer: 'JPMorgan Chase (Nutmeg)',
+      title: 'AI Enablement',
+      employer: 'J.P. Morgan Personal Investing',
     },
     skills: ['TypeScript', 'React', 'Microfrontends', 'GraphQL', 'CI/CD'],
     hobbies: ['DIY', 'Photography', 'Piano', 'Violin', 'Singing'],
