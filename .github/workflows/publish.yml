@@ -29,8 +29,8 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      # The release's tag must name the version in package.json and a commit on main, so a stale
-      # tag (v1.1.0 points at a commit that never reached main) cannot publish unreviewed code.
+      # The release's tag must name the version in package.json and a commit on main, so a tag
+      # pushed from an unmerged branch cannot publish unreviewed code.
       - name: Check the tag against package.json and main
         env:
           TAG: ${{ github.event.release.tag_name }}
