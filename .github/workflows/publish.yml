@@ -11,9 +11,12 @@ permissions:
   contents: read
   id-token: write # npm trusted publishing
 
+# One publish at a time, and every release waits its turn: the default queue keeps only one
+# pending run and cancels it when another arrives, and a cancelled release event is not replayed.
 concurrency:
   group: publish
   cancel-in-progress: false
+  queue: max
 
 jobs:
   publish:
