@@ -49,8 +49,10 @@ const constructCard = (): string => {
   const paddingCol = ' '.repeat(padding);
   const innerWidth = longestLine + padding * 2;
 
-  // Box-drawing characters frame the banner as well as the body, so the card keeps its outline
-  // where colour is unavailable (NO_COLOR, a pipe, a CI log) and the blue banner would vanish.
+  // In colour, the blue banner is the card's top edge and spans the border columns. Without
+  // colour (NO_COLOR, a pipe, a CI log) the banner would vanish and leave the box open, so
+  // box-drawing characters frame it instead, with a divider under it.
+  const hasColour = chalk.level > 0;
   const borderLine = (left: string, fill: string, right: string): string =>
     formatters.border(
       `${marginCol}${left}${fill.repeat(innerWidth)}${right}${marginCol}`,
@@ -59,11 +61,15 @@ const constructCard = (): string => {
     text: string,
     format: (value: string) => string,
   ): string =>
-    [
-      formatters.border(`${marginCol}║`),
-      format(`${paddingCol}${text.padEnd(longestLine)}${paddingCol}`),
-      formatters.border(`║${marginCol}`),
-    ].join('');
+    hasColour
+      ? [
+          marginCol,
+          format(`${paddingCol} ${text.padEnd(longestLine)}${paddingCol} `),
+          marginCol,
+        ].join('')
+      : `${marginCol}║${paddingCol}${text.padEnd(
+          longestLine,
+        )}${paddingCol}║${marginCol}`;
 
   const topLine = borderLine('╔', '═', '╗');
   const headerPadding = bannerLine('', formatters.bannerName);
@@ -107,13 +113,13 @@ const constructCard = (): string => {
 
   return [
     ...marginLines,
-    topLine,
+    ...(hasColour ? [] : [topLine]),
     headerPadding,
     nameLine,
     whatamiLine,
     emailLine,
     headerPadding,
-    dividerLine,
+    ...(hasColour ? [] : [dividerLine]),
     blankLine,
     jobLine,
     locationLine,
