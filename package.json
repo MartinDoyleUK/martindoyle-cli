@@ -1,6 +1,6 @@
 {
   "name": "martindoyle",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Martin Doyle's simple CLI",
   "type": "module",
   "bin": {
