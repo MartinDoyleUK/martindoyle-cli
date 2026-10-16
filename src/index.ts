@@ -35,40 +35,45 @@ const getLinkLines = (): string[] => {
 
 const constructCard = (): string => {
   const rawLinkLines = getLinkLines();
-  const longestLine = getLongest([name, whatami, location, email, title, employer, ...rawLinkLines.map((line) => stripColor(line))]);
-  const marginLine = '\n'.repeat(margin);
+  const longestLine = getLongest([
+    name,
+    whatami,
+    location,
+    email,
+    title,
+    employer,
+    ...rawLinkLines.map((line) => stripColor(line)),
+  ]);
+  const marginLines = Array.from({ length: margin }, () => '');
   const marginCol = ' '.repeat(margin);
   const paddingCol = ' '.repeat(padding);
+  const innerWidth = longestLine + padding * 2;
 
-  const headerPadding = [
-    formatters.border(`${marginCol}`),
-    formatters.bannerName(' '.repeat(longestLine + padding * 2 + 2)),
-    formatters.border(`${marginCol}`),
-  ].join('');
-  const nameLine = [
-    formatters.border(`${marginCol}`),
-    formatters.bannerName(
-      `${paddingCol}${name.padEnd(longestLine)}  ${paddingCol}`,
-    ),
-    formatters.border(`${marginCol}`),
-  ].join('');
-  const whatamiLine = [
-    formatters.border(`${marginCol}`),
-    formatters.bannerName(
-      `${paddingCol}${whatami.padEnd(longestLine)}  ${paddingCol}`,
-    ),
-    formatters.border(`${marginCol}`),
-  ].join('');
-  const emailLine = [
-    formatters.border(`${marginCol}`),
-    formatters.bannerEmail(
-      `${paddingCol}${email.padEnd(longestLine)}  ${paddingCol}`,
-    ),
-    formatters.border(`${marginCol}`),
-  ].join('');
+  // Box-drawing characters frame the banner as well as the body, so the card keeps its outline
+  // where colour is unavailable (NO_COLOR, a pipe, a CI log) and the blue banner would vanish.
+  const borderLine = (left: string, fill: string, right: string): string =>
+    formatters.border(
+      `${marginCol}${left}${fill.repeat(innerWidth)}${right}${marginCol}`,
+    );
+  const bannerLine = (
+    text: string,
+    format: (value: string) => string,
+  ): string =>
+    [
+      formatters.border(`${marginCol}║`),
+      format(`${paddingCol}${text.padEnd(longestLine)}${paddingCol}`),
+      formatters.border(`║${marginCol}`),
+    ].join('');
+
+  const topLine = borderLine('╔', '═', '╗');
+  const headerPadding = bannerLine('', formatters.bannerName);
+  const nameLine = bannerLine(name, formatters.bannerName);
+  const whatamiLine = bannerLine(whatami, formatters.bannerName);
+  const emailLine = bannerLine(email, formatters.bannerEmail);
+  const dividerLine = borderLine('╠', '═', '╣');
   const blankLine = [
     formatters.border(`${marginCol}║`),
-    ' '.repeat(longestLine + padding * 2),
+    ' '.repeat(innerWidth),
     formatters.border(`║${marginCol}`),
   ].join('');
   const jobLine = [
@@ -85,15 +90,7 @@ const constructCard = (): string => {
     paddingCol,
     formatters.border(`║${marginCol}`),
   ].join('');
-  const bottomLine = formatters.border(
-    [
-      marginCol,
-      '╚',
-      '═'.repeat(longestLine + padding * 2),
-      '╝',
-      marginCol,
-    ].join(''),
-  );
+  const bottomLine = borderLine('╚', '═', '╝');
 
   const linkLines = rawLinkLines.map((nextLinkLine) => {
     const numSpaces = longestLine - stripColor(nextLinkLine).length;
@@ -109,12 +106,14 @@ const constructCard = (): string => {
   });
 
   return [
-    marginLine,
+    ...marginLines,
+    topLine,
     headerPadding,
     nameLine,
     whatamiLine,
     emailLine,
     headerPadding,
+    dividerLine,
     blankLine,
     jobLine,
     locationLine,
@@ -122,7 +121,7 @@ const constructCard = (): string => {
     ...linkLines,
     blankLine,
     bottomLine,
-    marginLine,
+    ...marginLines,
   ].join('\n');
 };
 
