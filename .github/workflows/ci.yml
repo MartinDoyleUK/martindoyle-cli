@@ -1,6 +1,10 @@
 name: CI
 
 # Lint and build every pull request and every push to main. Publishing is publish.yml's job.
+# `ci-ok` is the required check of this repository's default-branch ruleset (managed in
+# MartinDoyleUK/terraform, github/rulesets.tf): a pull request merges only once it has passed
+# on a branch that is up to date with main. Keep the job name, which the ruleset requires by
+# name, and add no path filters: a required check that never reports blocks the pull request.
 on:
   pull_request:
   push:
@@ -10,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  ci-ok:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
