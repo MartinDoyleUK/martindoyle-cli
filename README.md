@@ -29,7 +29,7 @@ yarn build
 yarn start
 ```
 
-The `CI` workflow runs the same lint and build, then prints the card, on every pull request and every push to `main`.
+The `CI` workflow runs the same lint and build, then prints the card, on every pull request and every push to `main`. Its job, `ci-ok`, is the check the `default-branch` ruleset requires: a pull request merges only once it has passed on a branch that is up to date with `main`.
 
 ## Releasing
 
